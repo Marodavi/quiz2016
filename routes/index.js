@@ -68,4 +68,9 @@ router.put('/quizzes/:quizId(\\d+)/comments/:commentId(\\d+)/accept',
 	                                               quizController.ownershipRequired, 
 	                                               commentController.accept);
 
+///P9
+router.get('/author', function(req, res, next) {
+res.render('author', { author: 'Mario Rodriguez Avila' });
+});
+
 module.exports = router;
