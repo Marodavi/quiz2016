@@ -113,7 +113,10 @@ exports.create = function(req, res, next) {
 
       req.flash('error', 'Errores en el formulario:');
       for (var i in error.errors) {
-          req.flash('error', error.errors[i].value);
+           console.log(error);
+           console.log(error.errors[i]);
+           console.log(error.errors[i].value);
+           req.flash('error', error.errors[i].message);
       };
 
       res.render('quizzes/new', {quiz: quiz});
