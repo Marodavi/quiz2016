@@ -36,24 +36,42 @@ exports.ownershipRequired = function(req, res, next){
 // GET /quizzes
 exports.index = function(req, res, next) {
   var search = req.query.search || "";
-  search = search.replace(" ","%");
+  var format = req.params.format || "";
+
   models.Quiz.findAll({where: {question: {$like: "%" + search + "%"}}})
-    .then(function(quizzes) {
+  .then(function(quizzes) {
+    if(format===("json")){
+      res.json({ quizzes: quizzes});
+    }
+    else if (format===("html")){
       res.render('quizzes/index.ejs', { quizzes: quizzes});
-    })
-    .catch(function(error) {
-      next(error);
-    });
+    }
+    else {
+      res.render('quizzes/index.ejs', { quizzes: quizzes});
+    }
+  })
+  .catch(function(error) {
+    next(error);
+  });
 };
 
 
 // GET /quizzes/:id
 exports.show = function(req, res, next) {
-
-	var answer = req.query.answer || '';
-
-	res.render('quizzes/show', {quiz: req.quiz,
-								answer: answer});
+  var answer = req.query.answer || '';
+  var format = req.params.format || "";
+  if(format===("json")){
+    res.json({quiz: req.quiz,
+      answer: answer});
+  }
+  else if (format===("html")){
+    res.render('quizzes/show', {quiz: req.quiz,
+      answer: answer});
+  }
+  else {
+    res.render('quizzes/show', {quiz: req.quiz,
+      answer: answer});
+  }
 };
 
 
