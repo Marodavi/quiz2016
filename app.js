@@ -41,6 +41,28 @@ app.use(function(req, res, next) {
    next();
 });
 
+//P12 Autologout
+
+app.use(function(req, res, next) {
+  var user = req.session.user;
+  var ahora = new Date();
+  if(!user){
+    next();
+  }else if (ahora.getTime() - user.tiempo > 5000){
+    delete req.session.user;
+//Redirecciona a la pagina ppal
+res.redirect('/');
+next();
+}else{
+  user.tiempo = new Date().getTime();
+  next();
+}
+});
+
+
+
+
+
 app.use('/', routes);
 
 // catch 404 and forward to error handler
